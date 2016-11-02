@@ -19,6 +19,10 @@ export class BankAccount {
         this._getBillByName(dstBill).amount += amount;
     }
 
+    pay(billName, serviceName, amount) {
+        this._getBillByName(billName).amount -= amount;
+    }
+
     _getBillByName(billName) {
         let bills = this._bills.filter((bill) => bill.name == billName);
         return bills[0];

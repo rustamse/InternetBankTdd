@@ -43,9 +43,22 @@ suite('internet bank account tests', function () {
 
             bankAccount.transfer('main', 'additional', 500);
 
-            let additionalAmount = bankAccount.getAmountByBillName('main');
+            let mainAmount = bankAccount.getAmountByBillName('main');
 
-            assert.equal(10000 - 500, additionalAmount);
+            assert.equal(10000 - 500, mainAmount);
+        });
+    });
+
+    suite('when user pay for mobile phone 500 roubles from main bill', function () {
+        test('main bill amount decreased on 500 roubles', function () {
+            let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
+            let bankAccount = new BankAccount(bills);
+
+            bankAccount.pay('main', 'mobile phone', 500);
+
+            let mainAmount = bankAccount.getAmountByBillName('main');
+
+            assert.equal(10000 - 500, mainAmount);
         });
     });
 });
