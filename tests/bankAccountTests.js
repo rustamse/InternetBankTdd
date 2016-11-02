@@ -24,4 +24,17 @@ suite('internet bank account tests', function () {
             assert.equal(10000, amount);
         });
     });
+
+    suite('when user transfer 500 roubles from main bill to additional bill', function () {
+        let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
+        let bankAccount = new BankAccount(bills);
+
+        test('additional bill amount increased on 500 roubles and amount = 20500', function () {
+            bankAccount.transfer('main', 'additional', 500);
+
+            let additionalAmount = bankAccount.getAmountByBillName('additional');
+
+            assert.equal(20000 + 500, additionalAmount);
+        });
+    });
 });
