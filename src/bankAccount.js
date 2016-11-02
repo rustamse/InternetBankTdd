@@ -16,7 +16,11 @@ export class BankAccount {
     }
 
     transfer(srcBill, dstBill, amount) {
-        this._getBillByName(srcBill).amount -= amount;
+        var srcBill = this._getBillByName(srcBill);
+        if (srcBill.amount < amount)
+            throw new Error('Not enough amount');
+
+        srcBill.amount -= amount;
         this._getBillByName(dstBill).amount += amount;
     }
 

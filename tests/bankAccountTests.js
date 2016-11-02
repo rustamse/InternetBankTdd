@@ -31,26 +31,37 @@ suite('internet bank account tests', function () {
     });
 
     suite('when user transfer 500 roubles from main bill to additional bill', function () {
-        test('additional bill amount increased on 500 roubles and total amount = 20500', function () {
-            let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
-            let bankAccount = new BankAccount(bills);
+        suite('when main bill amount 1000 rouble (more than 500)', function () {
+            test('additional bill amount increased on 500 roubles and total amount = 20500', function () {
+                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+                let bankAccount = new BankAccount(bills);
 
-            bankAccount.transfer('main', 'additional', 500);
+                bankAccount.transfer('main', 'additional', 500);
 
-            let additionalAmount = bankAccount.getAmountByBillName('additional');
+                let additionalAmount = bankAccount.getAmountByBillName('additional');
 
-            assert.equal(20000 + 500, additionalAmount);
+                assert.equal(20000 + 500, additionalAmount);
+            });
+
+            test('main bill amount decreased on 500 roubles and total amount = 500', function () {
+                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+                let bankAccount = new BankAccount(bills);
+
+                bankAccount.transfer('main', 'additional', 500);
+
+                let mainAmount = bankAccount.getAmountByBillName('main');
+
+                assert.equal(1000 - 500, mainAmount);
+            });
         });
 
-        test('main bill amount decreased on 500 roubles and total amount = 9500', function () {
-            let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
-            let bankAccount = new BankAccount(bills);
+        suite('when main bill amount 300 roubles', function () {
+            test('user will get exception Not enough amount', function () {
+                let bills = [{name: 'main', amount: 300}, {name: 'additional', amount: 20000}];
+                let bankAccount = new BankAccount(bills);
 
-            bankAccount.transfer('main', 'additional', 500);
-
-            let mainAmount = bankAccount.getAmountByBillName('main');
-
-            assert.equal(10000 - 500, mainAmount);
+                assert.throws(() => bankAccount.transfer('main', 'additional', 500), '/Not enough amount/');
+            });
         });
     });
 
