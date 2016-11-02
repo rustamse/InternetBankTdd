@@ -3,6 +3,7 @@
 export class BankAccount {
     constructor(bills) {
         this._bills = bills;
+        this._bills.map((a) => a.tranasctions = []);
     }
 
     getNamesOfBills() {
@@ -20,7 +21,15 @@ export class BankAccount {
     }
 
     pay(billName, serviceName, amount) {
-        this._getBillByName(billName).amount -= amount;
+        let bill = this._getBillByName(billName);
+        bill.amount -= amount;
+
+        bill.tranasctions.push(serviceName + ' ' + amount + ' roubles');
+    }
+
+    getTransactionsHistory(billName) {
+        let bill = this._getBillByName(billName);
+        return bill.tranasctions;
     }
 
     _getBillByName(billName) {

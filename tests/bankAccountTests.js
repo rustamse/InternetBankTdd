@@ -50,15 +50,22 @@ suite('internet bank account tests', function () {
     });
 
     suite('when user pay for mobile phone 500 roubles from main bill', function () {
+        let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
+        let bankAccount = new BankAccount(bills);
+
+        bankAccount.pay('main', 'mobile phone', 500);
+
         test('main bill amount decreased on 500 roubles', function () {
-            let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
-            let bankAccount = new BankAccount(bills);
-
-            bankAccount.pay('main', 'mobile phone', 500);
-
             let mainAmount = bankAccount.getAmountByBillName('main');
 
             assert.equal(10000 - 500, mainAmount);
         });
+
+        test('main bill history last transaction is mobile phone 500 roubles', function () {
+            let transactions = bankAccount.getTransactionsHistory('main');
+
+            assert.equal('mobile phone 500 roubles', transactions[0]);
+        });
     });
+
 });
