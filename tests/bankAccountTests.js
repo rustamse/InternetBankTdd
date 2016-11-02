@@ -53,6 +53,28 @@ suite('internet bank account tests', function () {
 
                 assert.equal(1000 - 500, mainAmount);
             });
+
+            test('main bill transaction history last transaction is transfer to additional 500 roubles', function () {
+                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+                let bankAccount = new BankAccount(bills);
+
+                bankAccount.transfer('main', 'additional', 500);
+
+                let transactions = bankAccount.getTransactionsHistory('main');
+
+                assert.equal('transfer to additional 500 roubles', transactions[0]);
+            });
+
+            test('additional bill transaction history last transaction is transfer from main 500 roubles', function () {
+                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+                let bankAccount = new BankAccount(bills);
+
+                bankAccount.transfer('main', 'additional', 500);
+
+                let transactions = bankAccount.getTransactionsHistory('additional');
+
+                assert.equal('transfer from main 500 roubles', transactions[0]);
+            });
         });
 
         suite('when main bill amount 300 roubles', function () {

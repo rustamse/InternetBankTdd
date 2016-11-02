@@ -17,14 +17,15 @@ export class BankAccount {
 
     transfer(srcBillName, dstBillName, amount) {
         let srcBill = this._getBillByName(srcBillName);
-        this._makeTransaction(srcBill, 'transfer to' + dstBillName, amount)
+        let dstBill = this._getBillByName(dstBillName);
+        this._makeDecTransaction(srcBill, 'transfer to ' + dstBillName, amount);
 
-        this._getBillByName(dstBillName).amount += amount;
+        this._makeIncTransaction(dstBill, 'transfer from ' + srcBillName, amount);
     }
 
     pay(billName, serviceName, amount) {
         let bill = this._getBillByName(billName);
-        this._makeTransaction(bill, serviceName, amount);
+        this._makeDecTransaction(bill, serviceName, amount);
     }
 
     getTransactionsHistory(billName) {
@@ -39,10 +40,16 @@ export class BankAccount {
         return bills[0];
     }
 
-    _makeTransaction(bill, transactionName, amount) {
+    _makeDecTransaction(bill, transactionName, amount) {
         if (bill.amount < amount)
             throw new Error('Not enough amount');
         bill.amount -= amount;
+
+        bill.tranasctions.push(transactionName + ' ' + amount + ' roubles');
+    }
+
+    _makeIncTransaction(bill, transactionName, amount) {
+        bill.amount += amount;
 
         bill.tranasctions.push(transactionName + ' ' + amount + ' roubles');
     }
