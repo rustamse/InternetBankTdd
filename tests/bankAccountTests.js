@@ -66,21 +66,42 @@ suite('internet bank account tests', function () {
     });
 
     suite('when user pay for mobile phone 500 roubles from main bill', function () {
-        let bills = [{name: 'main', amount: 10000}, {name: 'additional', amount: 20000}];
-        let bankAccount = new BankAccount(bills);
+        suite('when main bill amount is 1000 roubles (more than 500)', function () {
+            let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+            let bankAccount = new BankAccount(bills);
 
-        bankAccount.pay('main', 'mobile phone', 500);
+            bankAccount.pay('main', 'mobile phone', 500);
 
-        test('main bill amount decreased on 500 roubles', function () {
-            let mainAmount = bankAccount.getAmountByBillName('main');
+            test('main bill amount decreased on 500 roubles', function () {
+                let mainAmount = bankAccount.getAmountByBillName('main');
 
-            assert.equal(10000 - 500, mainAmount);
+                assert.equal(1000 - 500, mainAmount);
+            });
+
+            test('main bill history last transaction is mobile phone 500 roubles', function () {
+                let transactions = bankAccount.getTransactionsHistory('main');
+
+                assert.equal('mobile phone 500 roubles', transactions[0]);
+            });
         });
 
-        test('main bill history last transaction is mobile phone 500 roubles', function () {
-            let transactions = bankAccount.getTransactionsHistory('main');
+        suite('when main bill amount is 200 roubles (smaller than 500)', function () {
+            let bills = [{name: 'main', amount: 200}, {name: 'additional', amount: 20000}];
+            let bankAccount = new BankAccount(bills);
 
-            assert.equal('mobile phone 500 roubles', transactions[0]);
+            test('user will get exception Not enough amount', function () {
+                assert.throws(() => bankAccount.pay('main', 'mobile phone', 500), /Not enough amount/);
+            });
+
+            test('main bill history is empty (not contains mobile phone 500 roubles)', function () {
+                try {
+                    bankAccount.pay('main', 'mobile phone', 500);
+                }
+                catch (ex) {
+                }
+                let transactions = bankAccount.getTransactionsHistory('main');
+                assert.equal(0, transactions.length);
+            });
         });
     });
 

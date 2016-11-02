@@ -15,20 +15,16 @@ export class BankAccount {
         return bill.amount;
     }
 
-    transfer(srcBill, dstBill, amount) {
-        var srcBill = this._getBillByName(srcBill);
-        if (srcBill.amount < amount)
-            throw new Error('Not enough amount');
+    transfer(srcBillName, dstBillName, amount) {
+        let srcBill = this._getBillByName(srcBillName);
+        this._makeTransaction(srcBill, 'transfer to' + dstBillName, amount)
 
-        srcBill.amount -= amount;
-        this._getBillByName(dstBill).amount += amount;
+        this._getBillByName(dstBillName).amount += amount;
     }
 
     pay(billName, serviceName, amount) {
         let bill = this._getBillByName(billName);
-        bill.amount -= amount;
-
-        bill.tranasctions.push(serviceName + ' ' + amount + ' roubles');
+        this._makeTransaction(bill, serviceName, amount);
     }
 
     getTransactionsHistory(billName) {
@@ -41,5 +37,13 @@ export class BankAccount {
         if (bills.length == 0)
             throw new Error('Not found bill ' + billName);
         return bills[0];
+    }
+
+    _makeTransaction(bill, transactionName, amount) {
+        if (bill.amount < amount)
+            throw new Error('Not enough amount');
+        bill.amount -= amount;
+
+        bill.tranasctions.push(transactionName + ' ' + amount + ' roubles');
     }
 }
