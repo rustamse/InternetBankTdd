@@ -10,8 +10,9 @@ install: npm install
 
 script: npm test
 
+cache:
+  directories:
+    - node_modules
 after_script:
-- npm install -g codeclimate-test-reporter
-- codeclimate-test-reporter < lcov.info
-
-
+  - npm install -g codeclimate-test-reporter
+  - codeclimate-test-reporter < ./coverage/lcov.info
