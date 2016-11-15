@@ -36,7 +36,7 @@ export class BankAccount {
     _getBillByName(billName) {
         let bills = this._bills.filter((bill) => bill.name == billName);
         if (bills.length == 0)
-            throw new Error('Not found bill ' + billName);
+            throw new Error('Bill not found: ' + billName);
         return bills[0];
     }
 
