@@ -32,10 +32,14 @@ suite('internet bank account tests', function () {
 
     suite('when user transfer 500 roubles from main bill to additional bill', function () {
         suite('when main bill amount 1000 rouble (more than 500)', function () {
-            test('additional bill amount increased on 500 roubles and total amount = 20500', function () {
-                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
-                let bankAccount = new BankAccount(bills);
+            var bills;
+            var bankAccount;
+            setup('', function () {
+                bills == [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+                bankAccount = new BankAccount(bills);
+            });
 
+            test('additional bill amount increased on 500 roubles and total amount = 20500', function () {
                 bankAccount.transfer('main', 'additional', 500);
 
                 let additionalAmount = bankAccount.getAmountByBillName('additional');
@@ -44,9 +48,6 @@ suite('internet bank account tests', function () {
             });
 
             test('main bill amount decreased on 500 roubles and total amount = 500', function () {
-                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
-                let bankAccount = new BankAccount(bills);
-
                 bankAccount.transfer('main', 'additional', 500);
 
                 let mainAmount = bankAccount.getAmountByBillName('main');
@@ -55,9 +56,6 @@ suite('internet bank account tests', function () {
             });
 
             test('main bill transaction history last transaction is transfer to additional 500 roubles', function () {
-                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
-                let bankAccount = new BankAccount(bills);
-
                 bankAccount.transfer('main', 'additional', 500);
 
                 let transactions = bankAccount.getTransactionsHistory('main');
@@ -66,9 +64,6 @@ suite('internet bank account tests', function () {
             });
 
             test('additional bill transaction history last transaction is transfer from main 500 roubles', function () {
-                let bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
-                let bankAccount = new BankAccount(bills);
-
                 bankAccount.transfer('main', 'additional', 500);
 
                 let transactions = bankAccount.getTransactionsHistory('additional');
