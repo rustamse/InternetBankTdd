@@ -35,7 +35,7 @@ suite('internet bank account tests', function () {
             var bills;
             var bankAccount;
             setup('', function () {
-                bills == [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
+                bills = [{name: 'main', amount: 1000}, {name: 'additional', amount: 20000}];
                 bankAccount = new BankAccount(bills);
             });
 
