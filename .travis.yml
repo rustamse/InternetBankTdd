@@ -2,6 +2,15 @@ language: node_js
 
 node_js: node
 
+addons:
+  code_climate:
+    repo_token: 3a2e9bdbfeaff2d8bede751999682bffbe28133e
+
 install: npm install
 
 script: npm test
+
+after_script:
+  - codeclimate-test-reporter < lcov.info
+
+
