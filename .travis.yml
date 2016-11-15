@@ -2,17 +2,6 @@ language: node_js
 
 node_js: node
 
-addons:
-  code_climate:
-    repo_token: 730efef98a0a95a3e8d6cf6b1e3ceaf81f7bb29920038650ce70d19850dc82a1
-
 install: npm install
 
 script: npm test
-
-cache:
-  directories:
-    - node_modules
-after_script:
-  - npm install -g codeclimate-test-reporter
-  - codeclimate-test-reporter < ./coverage/lcov.info
