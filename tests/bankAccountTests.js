@@ -25,7 +25,7 @@ suite('internet bank account tests', function () {
 
         suite('when user ask amount of (NON-existing) credit bill', function () {
             test('user will get exception Not found bill', function () {
-                assert.throws(() => bankAccount.getAmountByBillName('credit'), /Not found bill credit/);
+                assert.throws(() => bankAccount.getAmountByBillName('credit'), /Bill not found: credit/);
             });
         });
     });
